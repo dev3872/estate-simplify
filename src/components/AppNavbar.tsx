@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { Home2, User, Settings } from "tabler-icons-react";
 import { HomeLogo } from "../images/Logo";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
 	wrapper: {
@@ -136,17 +137,29 @@ const mainLinksMockdata = [
 ];
 
 const linksdata = [
-	{ name: "Home", values: ["Post Property", "Search Property"] },
-	{ name: "Account", values: ["Sign in", "Sign up"] },
-	{ name: "Settings", values: ["Help", "About us"] },
+	{ name: "Home", values: [{ valueName: "Home", valueLink: "/" }] },
+	{
+		name: "Account",
+		values: [
+			{ valueName: "Login", valueLink: "/login" },
+			{ valueName: "Register", valueLink: "/register" },
+		],
+	},
+	{
+		name: "Settings",
+		values: [
+			{ valueName: "Help", valueLink: "/help" },
+			{ valueName: "About Us", valueLink: "/about-us" },
+		],
+	},
 ];
 
 export function AppNavbar() {
 	const { classes, cx } = useStyles();
-	const [active, setActive] = useState("Home");
+	const [active, setActive] = useState({ index: 0, name: "Home" });
 	const [activeLink, setActiveLink] = useState("Settings");
 
-	const mainLinks = mainLinksMockdata.map((link) => (
+	const mainLinks = mainLinksMockdata.map((link, index) => (
 		<Tooltip
 			label={link.label}
 			position="right"
@@ -155,9 +168,9 @@ export function AppNavbar() {
 			key={link.label}
 		>
 			<UnstyledButton
-				onClick={() => setActive(link.label)}
+				onClick={() => setActive({ index: index, name: link.label })}
 				className={cx(classes.mainLink, {
-					[classes.mainLinkActive]: link.label === active,
+					[classes.mainLinkActive]: link.label === active.name,
 				})}
 			>
 				<link.icon />
@@ -165,34 +178,36 @@ export function AppNavbar() {
 		</Tooltip>
 	));
 
-	const links = linksdata[0].values.map((link) => (
-		<a
+	const links = linksdata[active.index].values.map((link) => (
+		<Link
 			className={cx(classes.link, {
-				[classes.linkActive]: activeLink === link,
+				[classes.linkActive]: activeLink === link.valueName,
 			})}
-			href="/"
+			to={link.valueLink}
 			onClick={(event) => {
-				event.preventDefault();
-				setActiveLink(link);
+				setActiveLink(link.valueName);
 			}}
-			key={link}
+			key={link.valueName}
 		>
-			{link}
-		</a>
+			{link.valueName}
+		</Link>
 	));
 
 	return (
-		<Navbar height={"100vh"} width={{ sm: 300 }}>
+		<Navbar height={"100vh"} sx={{ width: "300px" }}>
 			<Navbar.Section grow className={classes.wrapper}>
 				<div className={classes.aside}>
-					<div className={classes.logo}>
-						<HomeLogo />
-					</div>
+					<Link to="/">
+						{" "}
+						<div className={classes.logo}>
+							<HomeLogo />
+						</div>
+					</Link>
 					{mainLinks}
 				</div>
 				<div className={classes.main}>
 					<Title order={4} className={classes.title}>
-						{active}
+						{active.name}
 					</Title>
 
 					{links}
