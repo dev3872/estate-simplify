@@ -6,6 +6,7 @@ interface UserInfoActionProps {
 	name: string;
 	email: string;
 	job: string;
+	
 }
 const useStyles = createStyles((theme) => ({
 	user: {

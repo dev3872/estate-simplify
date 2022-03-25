@@ -68,7 +68,7 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-export function Landing() {
+export function Landing(props: { auth: boolean }) {
 	const { classes } = useStyles();
 	return (
 		<div>

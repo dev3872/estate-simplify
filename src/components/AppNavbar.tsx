@@ -6,7 +6,14 @@ import {
 	Tooltip,
 	Title,
 } from "@mantine/core";
-import { Home2, User, Settings } from "tabler-icons-react";
+import {
+	Home2,
+	User,
+	Settings,
+	Search,
+	AddressBook,
+	Plus,
+} from "tabler-icons-react";
 import { HomeLogo } from "../images/Logo";
 import { Link } from "react-router-dom";
 
@@ -130,35 +137,85 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-const mainLinksMockdata = [
-	{ icon: Home2, label: "Home" },
-	{ icon: User, label: "Account" },
-	{ icon: Settings, label: "Settings" },
-];
-
-const linksdata = [
-	{ name: "Home", values: [{ valueName: "Home", valueLink: "/" }] },
-	{
-		name: "Account",
-		values: [
-			{ valueName: "Login", valueLink: "/login" },
-			{ valueName: "Register", valueLink: "/register" },
-		],
-	},
-	{
-		name: "Settings",
-		values: [
-			{ valueName: "Help", valueLink: "/help" },
-			{ valueName: "About Us", valueLink: "/about-us" },
-		],
-	},
-];
-
-export function AppNavbar() {
+export function AppNavbar(props: { auth: boolean }) {
 	const { classes, cx } = useStyles();
 	const [active, setActive] = useState({ index: 0, name: "Home" });
 	const [activeLink, setActiveLink] = useState("Settings");
 
+	const mainLinksMockdata = props.auth
+		? [
+				{ icon: Home2, label: "Home" },
+				{ icon: User, label: "Account" },
+				{ icon: Settings, label: "Settings" },
+				{ icon: Plus, label: "New" },
+				{ icon: AddressBook, label: "List" },
+				
+				{ icon: Search, label: "Search" },
+				
+		  ]
+		: [
+				{ icon: Home2, label: "Home" },
+				{ icon: User, label: "Account" },
+				{ icon: Settings, label: "Settings" },
+		  ];
+
+	const linksdata = [
+		{
+			name: "Home",
+			values: props.auth
+				? [{ valueName: "Dashboard", valueLink: "/" }]
+				: [{ valueName: "Home", valueLink: "/" }],
+		},
+		{
+			name: "Account",
+			values: props.auth
+				? [
+						{ valueName: "Profile", valueLink: "/profile" },
+						{ valueName: "Edit Profile", valueLink: "/edit-profile" },
+						{ valueName: "My Contacts", valueLink: "/contacts" },
+						{ valueName: "Messages", valueLink: "/messages" },
+						{ valueName: "Logout", valueLink: "/logout" },
+				  ]
+				: [
+						{ valueName: "Login", valueLink: "/login" },
+						{ valueName: "Register", valueLink: "/register" },
+				  ],
+		},
+		{
+			name: "Settings",
+			values: props.auth
+				? [
+						{ valueName: "Theme", valueLink: "/theme" },
+						{ valueName: "Help", valueLink: "/help" },
+						{ valueName: "About Us", valueLink: "/about-us" },
+				  ]
+				: [
+						{ valueName: "Help", valueLink: "/help" },
+						{ valueName: "About Us", valueLink: "/about-us" },
+				  ],
+		},
+		{
+			name: "Search",
+			values: [
+				{ valueName: "Residential Property", valueLink: "/residential-search" },
+				{ valueName: "Commercial Property", valueLink: "/commercial-search" },
+			],
+		},
+		{
+			name: "List",
+			values: [
+				{ valueName: "Near me", valueLink: "/vicinity-properties" },
+				{ valueName: "Posted By me", valueLink: "/my-properties" },
+			],
+		},
+		{
+			name: "New",
+			values: [
+				{ valueName: "Post Property", valueLink: "/post-property" },
+				{ valueName: "Rent Property", valueLink: "/rent-property" },
+			],
+		},
+	];
 	const mainLinks = mainLinksMockdata.map((link, index) => (
 		<Tooltip
 			label={link.label}

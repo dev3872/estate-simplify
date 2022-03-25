@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Paper,
 	createStyles,
@@ -8,15 +8,20 @@ import {
 	Button,
 	Title,
 	Text,
+	Loader,
+	Notification,
 } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { useNotifications } from "@mantine/notifications";
+import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../images/login1.svg";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { Check, X } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
 	wrapper: {
 		height: "100vh",
 		width: "100%",
+		position: "relative",
 		backgroundSize: "cover",
 		backgroundImage: "url(" + LoginImage + ")",
 	},
@@ -46,6 +51,16 @@ const useStyles = createStyles((theme) => ({
 		marginLeft: "auto",
 		marginRight: "auto",
 	},
+	loaderVisible: {
+		position: "absolute",
+		left: "200px",
+		top: "350px",
+		height: "500px",
+		zIndex: 10,
+	},
+	loaderHidden: {
+		display: "none",
+	},
 }));
 interface registerDataInterface {
 	firstName: string;
@@ -54,7 +69,11 @@ interface registerDataInterface {
 	password: string;
 	password2: string;
 }
-export function Register() {
+interface FunctionalProps {
+	changeToken: (newToken: string) => void;
+	auth: boolean;
+}
+export const Register: React.FC<FunctionalProps> = (props: FunctionalProps) => {
 	const { classes } = useStyles();
 	const [registerData, setRegisterData] = useState<registerDataInterface>({
 		firstName: "",
@@ -63,7 +82,22 @@ export function Register() {
 		password: "",
 		password2: "",
 	});
+	const [visible, setVisible] = useState<boolean>(false);
+	const [notification, setNotification] = useState<boolean>(false);
+	const notifications = useNotifications();
+	const navigate = useNavigate();
+	useEffect(() => {
+	  if(props.auth===true){
+		  navigate('/');
+	  }
+	}, [props.auth,navigate])
+	
 	const registerUser = () => {
+		setVisible(true);
+		notifications.showNotification({
+			title: "Data sent to server",
+			message: "Data Successfully sent to server",
+		});
 		console.table(registerData);
 		var data = JSON.stringify({
 			name: registerData.firstName + " " + registerData.lastName,
@@ -81,10 +115,35 @@ export function Register() {
 		};
 		axios(config)
 			.then((response: AxiosResponse) => {
-				console.log(JSON.stringify(response.data));
+				props.changeToken(response.data.token);
+				setVisible(false);
+				resetRegisterData();
+				setNotification(true);
+				notifications.showNotification({
+					title: "Registration Success",
+					message: "Log in your account. 🤥",
+				});
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch((reason) => {
+				setVisible(false);
+				console.table(reason.response.data.errors);
+				reason.response.data.errors.map(
+					(error: {
+						location: string;
+						msg: string;
+						param: string;
+						value: string;
+					}) => {
+						return notifications.showNotification({
+							title: `${error.param}`,
+							message: `${error.msg}`,
+							color: "red",
+							icon: <X />,
+							autoClose: 5000,
+							style: { backgroundColor: "red" },
+						});
+					}
+				);
 			});
 	};
 	const changeRegisterData = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,8 +152,40 @@ export function Register() {
 			[event.target.name]: event.target.value,
 		});
 	};
+	const resetRegisterData = () => {
+		setRegisterData({
+			firstName: "",
+			lastName: "",
+			email: "",
+			password: "",
+			password2: "",
+		});
+	};
+
 	return (
 		<div className={classes.wrapper}>
+			<div className={visible ? classes.loaderVisible : classes.loaderHidden}>
+				<Loader variant="bars" size={"xl"} />
+			</div>
+			<div
+				className={notification ? classes.loaderVisible : classes.loaderHidden}
+			>
+				<Notification
+					onClose={() => setNotification(false)}
+					icon={<Check size={18} />}
+					color="teal"
+					title="User Registered"
+					sx={(theme) => ({
+						backgroundColor: theme.colors.gray[0],
+						"&:hover": {
+							backgroundColor: theme.colors.gray[1],
+						},
+					})}
+				>
+					{" "}
+					Login and begin to post Property
+				</Notification>
+			</div>
 			<Paper className={classes.form} radius={0} p={30}>
 				<Title
 					order={2}
@@ -110,6 +201,7 @@ export function Register() {
 					name="firstName"
 					placeholder="First name"
 					size="md"
+					value={registerData.firstName}
 					onChange={changeRegisterData}
 				/>
 				<TextInput
@@ -118,6 +210,7 @@ export function Register() {
 					placeholder="Last name"
 					mt="md"
 					size="md"
+					value={registerData.lastName}
 					onChange={changeRegisterData}
 				/>
 				<TextInput
@@ -126,6 +219,7 @@ export function Register() {
 					placeholder="hello@gmail.com"
 					mt="md"
 					size="md"
+					value={registerData.email}
 					onChange={changeRegisterData}
 				/>
 				<PasswordInput
@@ -134,6 +228,7 @@ export function Register() {
 					placeholder="Your password"
 					mt="md"
 					size="md"
+					value={registerData.password}
 					onChange={changeRegisterData}
 				/>
 				<PasswordInput
@@ -142,6 +237,7 @@ export function Register() {
 					placeholder="Confirm Password"
 					mt="md"
 					size="md"
+					value={registerData.password2}
 					onChange={changeRegisterData}
 				/>
 				<Checkbox label="Keep me logged in" mt="xl" size="md" />
@@ -155,4 +251,4 @@ export function Register() {
 			</Paper>
 		</div>
 	);
-}
+};

@@ -26,22 +26,23 @@ var data = [
 const useStyles = createStyles((theme) => ({
 	wrapper: {
 		display: "flex",
-        height:'100vh',
+		height: "100vh",
 		justifyContent: "space-around",
 		[theme.fn.smallerThan("md")]: {
 			flexDirection: "column",
-            overflowY:'scroll'
+			overflowY: "scroll",
 		},
 	},
 }));
 export default function ContactUs() {
 	const { classes } = useStyles();
+
 	return (
 		<Container className={classes.wrapper}>
 			{data.map((user, index) => {
 				return (
 					<User
-                        key={index}
+						key={index}
 						avatar={user.avatar}
 						name={user.name}
 						email={user.email}
