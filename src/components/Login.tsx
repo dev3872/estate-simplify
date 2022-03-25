@@ -11,9 +11,9 @@ import {
 } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../images/login1.svg";
-import { useNotifications } from "@mantine/notifications";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { X } from "tabler-icons-react";
+// import { useNotifications } from "@mantine/notifications";
+// import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+// import { X } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
 	wrapper: {
@@ -60,9 +60,9 @@ interface FunctionalProps {
 export const Login: React.FC<FunctionalProps> = (props: FunctionalProps) => {
 	const { classes } = useStyles();
 	const navigate = useNavigate();
-	const [visible, setVisible] = useState<boolean>(false);
-	const [notification, setNotification] = useState<boolean>(false);
-	const notifications = useNotifications();
+	// const [visible, setVisible] = useState<boolean>(false);
+	// const [notification, setNotification] = useState<boolean>(false);
+	// const notifications = useNotifications();
 	const [loginData, setLoginData] = useState<loginDataInterface>({
 		email: "",
 		password: "",
@@ -72,69 +72,69 @@ export const Login: React.FC<FunctionalProps> = (props: FunctionalProps) => {
 			navigate("/");
 		}
 	}, [props.auth, navigate]);
-	const loginUser = () => {
-		setVisible(true);
-		notifications.showNotification({
-			title: "Data sent to server",
-			message: "Data Successfully sent to server",
-		});
-		var data = JSON.stringify({
-			email: loginData.email,
-			password: loginData.password,
-		});
-		var config: AxiosRequestConfig = {
-			method: "POST",
-			url: "https://flexi-app-server.herokuapp.com/api/auth",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			data: data,
-		};
-		axios(config)
-			.then((response: AxiosResponse) => {
-				props.changeToken(response.data.token);
-				setVisible(false);
-				resetLoginData();
-				setNotification(true);
-				notifications.showNotification({
-					title: "Login Success",
-					message: "Welcome. 🤥",
-				});
-			})
-			.catch((reason) => {
-				setVisible(false);
-				console.table(reason.response.data.errors);
-				reason.response.data.errors.map(
-					(error: {
-						location: string;
-						msg: string;
-						param: string;
-						value: string;
-					}) => {
-						return notifications.showNotification({
-							title: `${error.param}`,
-							message: `${error.msg}`,
-							color: "red",
-							icon: <X />,
-							autoClose: 5000,
-							style: { backgroundColor: "red" },
-						});
-					}
-				);
-			});
-	};
+	// const loginUser = () => {
+	// 	setVisible(true);
+	// 	notifications.showNotification({
+	// 		title: "Data sent to server",
+	// 		message: "Data Successfully sent to server",
+	// 	});
+	// 	var data = JSON.stringify({
+	// 		email: loginData.email,
+	// 		password: loginData.password,
+	// 	});
+	// 	var config: AxiosRequestConfig = {
+	// 		method: "POST",
+	// 		url: "https://flexi-app-server.herokuapp.com/api/auth",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		data: data,
+	// 	};
+	// 	axios(config)
+	// 		.then((response: AxiosResponse) => {
+	// 			props.changeToken(response.data.token);
+	// 			setVisible(false);
+	// 			resetLoginData();
+	// 			setNotification(true);
+	// 			notifications.showNotification({
+	// 				title: "Login Success",
+	// 				message: "Welcome. 🤥",
+	// 			});
+	// 		})
+	// 		.catch((reason) => {
+	// 			setVisible(false);
+	// 			console.table(reason.response.data.errors);
+	// 			reason.response.data.errors.map(
+	// 				(error: {
+	// 					location: string;
+	// 					msg: string;
+	// 					param: string;
+	// 					value: string;
+	// 				}) => {
+	// 					return notifications.showNotification({
+	// 						title: `${error.param}`,
+	// 						message: `${error.msg}`,
+	// 						color: "red",
+	// 						icon: <X />,
+	// 						autoClose: 5000,
+	// 						style: { backgroundColor: "red" },
+	// 					});
+	// 				}
+	// 			);
+	// 		});
+	// };
 	const changeLoginData = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setLoginData({
 			...loginData,
 			[event.target.name]: event.target.value,
 		});
 	};
-	const resetLoginData = () => {
-		setLoginData({
-			email: "",
-			password: "",
-		});
-	};
+	// const resetLoginData = () => {
+	// 	setLoginData({
+	// 		email: "",
+	// 		password: "",
+	// 	});
+	// };
 
 	return (
 		<div className={classes.wrapper}>
