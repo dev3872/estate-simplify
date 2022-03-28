@@ -137,10 +137,17 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-export function AppNavbar(props: { auth: boolean }) {
+interface FunctionalProps {
+	auth: boolean;
+}
+export const AppNavbar: React.FC<FunctionalProps> = (
+	props: FunctionalProps
+) => {
 	const { classes, cx } = useStyles();
 	const [active, setActive] = useState({ index: 0, name: "Home" });
-	const [activeLink, setActiveLink] = useState("Settings");
+	const [activeLink, setActiveLink] = useState(
+		props.auth ? "Dashboard" : "Home"
+	);
 
 	const mainLinksMockdata = props.auth
 		? [
@@ -149,9 +156,7 @@ export function AppNavbar(props: { auth: boolean }) {
 				{ icon: Settings, label: "Settings" },
 				{ icon: Plus, label: "New" },
 				{ icon: AddressBook, label: "List" },
-				
 				{ icon: Search, label: "Search" },
-				
 		  ]
 		: [
 				{ icon: Home2, label: "Home" },
@@ -195,9 +200,12 @@ export function AppNavbar(props: { auth: boolean }) {
 				  ],
 		},
 		{
-			name: "Search",
+			name: "New",
 			values: [
-				{ valueName: "Residential Property", valueLink: "/residential-search" },
+				{
+					valueName: "Residential Property",
+					valueLink: "/post-residential-property",
+				},
 				{ valueName: "Commercial Property", valueLink: "/commercial-search" },
 			],
 		},
@@ -209,7 +217,7 @@ export function AppNavbar(props: { auth: boolean }) {
 			],
 		},
 		{
-			name: "New",
+			name: "Search",
 			values: [
 				{ valueName: "Post Property", valueLink: "/post-property" },
 				{ valueName: "Rent Property", valueLink: "/rent-property" },
@@ -272,4 +280,4 @@ export function AppNavbar(props: { auth: boolean }) {
 			</Navbar.Section>
 		</Navbar>
 	);
-}
+};

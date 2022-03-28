@@ -9,13 +9,12 @@ import {
 	Title,
 	Text,
 	Loader,
-	Notification,
 } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../images/login1.svg";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Check, X } from "tabler-icons-react";
+import { X } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
 	wrapper: {
@@ -83,15 +82,14 @@ export const Register: React.FC<FunctionalProps> = (props: FunctionalProps) => {
 		password2: "",
 	});
 	const [visible, setVisible] = useState<boolean>(false);
-	const [notification, setNotification] = useState<boolean>(false);
 	const notifications = useNotifications();
 	const navigate = useNavigate();
 	useEffect(() => {
-	  if(props.auth===true){
-		  navigate('/');
-	  }
-	}, [props.auth,navigate])
-	
+		if (props.auth === true) {
+			navigate("/");
+		}
+	}, [props.auth, navigate]);
+
 	const registerUser = () => {
 		setVisible(true);
 		notifications.showNotification({
@@ -118,7 +116,6 @@ export const Register: React.FC<FunctionalProps> = (props: FunctionalProps) => {
 				props.changeToken(response.data.token);
 				setVisible(false);
 				resetRegisterData();
-				setNotification(true);
 				notifications.showNotification({
 					title: "Registration Success",
 					message: "Log in your account. 🤥",
@@ -167,25 +164,7 @@ export const Register: React.FC<FunctionalProps> = (props: FunctionalProps) => {
 			<div className={visible ? classes.loaderVisible : classes.loaderHidden}>
 				<Loader variant="bars" size={"xl"} />
 			</div>
-			<div
-				className={notification ? classes.loaderVisible : classes.loaderHidden}
-			>
-				<Notification
-					onClose={() => setNotification(false)}
-					icon={<Check size={18} />}
-					color="teal"
-					title="User Registered"
-					sx={(theme) => ({
-						backgroundColor: theme.colors.gray[0],
-						"&:hover": {
-							backgroundColor: theme.colors.gray[1],
-						},
-					})}
-				>
-					{" "}
-					Login and begin to post Property
-				</Notification>
-			</div>
+
 			<Paper className={classes.form} radius={0} p={30}>
 				<Title
 					order={2}
