@@ -75,14 +75,14 @@ export function Landing(props: { auth: boolean }) {
 			<Container>
 				<div className={classes.inner}>
 					<div className={classes.content}>
-						<Title className={classes.title}>
-							A <span className={classes.highlight}>modern</span> React <br />{" "}
-							components library
-						</Title>
+						<Title className={classes.title}>FlexiAbode</Title>
 						<Text color="dimmed" mt="md">
-							Build fully functional accessible web applications faster than
-							ever – Mantine includes more than 120 customizable components and
-							hooks to cover you in any situation
+							Online FlexiAbode is a web based application where Property Owner,
+							Contractors and Consumers come forward together to manage their
+							property. It allows an easy and flexible way to communicate
+							property between Seller and User. Sellers can post his property
+							for Sell, Rent and P.G. Users interested can look through the
+							property by using filters and contact Owner.
 						</Text>
 
 						<List
@@ -96,16 +96,17 @@ export function Landing(props: { auth: boolean }) {
 							}
 						>
 							<List.Item>
-								<b>TypeScript based</b> – build type safe applications, all
-								components and hooks export types
+								<b>Secure</b> – We make sure your data is used solely for the
+								purpose specified by you.
 							</List.Item>
 							<List.Item>
-								<b>Free and open source</b> – all packages have MIT license, you
-								can use Mantine in any project
+								<b>Free</b> – Never a dime is charged, its free now and will
+								always be free
 							</List.Item>
 							<List.Item>
-								<b>No annoying focus ring</b> – focus ring will appear only when
-								user navigates with keyboard
+								<b>Search without Login</b> – Stay annonymous? we respect your
+								desire. Search your dream location site without creating an
+								account.
 							</List.Item>
 						</List>
 
