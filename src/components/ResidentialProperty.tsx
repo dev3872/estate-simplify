@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { useEffect } from "react";
 import { NavigateFunction, Route, Routes, useNavigate } from "react-router-dom";
-import { ListingFor, ReraCertification, UserType } from "./NewPropertyComponents";
+import { ListingFor, LocationDetail, PropertyDetail, PropertyForRent, PropertyForSharePG, PropertyType, ReraCertification, UserType } from "./NewPropertyComponents";
 
 interface FunctionalProps {
 	auth: boolean;
@@ -34,25 +34,25 @@ const ResidentialPropertySteps: residentialPropertyStepType[] = [
 	},{
         title: "Select Options",
         text:"Select necessory options",
-        link:"rera-certification",
+        link:"property-for",
         completed:false,
     },
 	{
 		title: "Property Type",
-		text: "",
-		link: "",
+		text: "Select Property Type",
+		link: "property-type",
 		completed: false,
 	},
 	{
 		title: "Location Detail",
-		text: "",
-		link: "",
+		text: "Select Location Detail",
+		link: "location-detail",
 		completed: false,
 	},
 	{
 		title: "Property Detail",
-		text: "",
-		link: "",
+		text: "Enter Property Detail",
+		link: "property-detail",
 		completed: false,
 	},
 	{
@@ -116,6 +116,10 @@ export const ResidentialProperty: React.FC<FunctionalProps> = (
 					<Route path="/user-type" element={<UserType />} />
 					<Route path="/listing-for" element={<ListingFor />} />
                     <Route path="/rera-certification" element={<ReraCertification />} />
+					<Route path="/property-for" element={<PropertyForSharePG />} />
+					<Route path="/property-type" element={<PropertyType />} />
+					<Route path="/location-detail" element={<LocationDetail />} />
+					<Route path="/property-detail" element={<PropertyDetail />} />
 				</Routes>
 			</Col>
 		</Grid>

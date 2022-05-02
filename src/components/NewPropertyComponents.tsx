@@ -2,16 +2,22 @@ import {
 	Badge,
 	Blockquote,
 	Card,
+	Checkbox,
+	Chip,
+	Chips,
 	Col,
 	createStyles,
 	Grid,
 	Group,
 	Image,
+	Input,
+	Select,
 	Switch,
 	Text,
 	TextInput,
 	Title,
 } from "@mantine/core";
+import { useState } from "react";
 const owner: string = require("../images/owner.jpg");
 const builder: string = require("../images/builder.jpg");
 const dealer: string = require("../images/dealer.jpg");
@@ -62,9 +68,40 @@ const useStyles = createStyles((theme) => ({
 		height: "100%",
 		justifyContent: "center",
 	},
-    reraInputElements:{
-        width:"70%"
-    }
+	reraInputElements: {
+		width: "70%",
+	},
+	checkboxClass: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+		justifyContent: "center",
+	},
+	selectClass: {
+		width: "50%",
+		marginTop: "30px",
+	},
+	chipsPropertyType: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+		justifyContent: "center",
+		width: "50%",
+	},
+	locationDetails: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+		justifyContent: "center",
+		width: "50%",
+	},
+	propertyDetails: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+		justifyContent: "center",
+		width: "75%",
+	},
 }));
 
 const UserTypeData: {
@@ -183,26 +220,173 @@ export const ReraCertification = () => {
 		<div className={classes.reraWrapper}>
 			<Switch label="My property has Rera Certification" size="md" />
 			<TextInput
-                className={classes.reraInputElements}
+				className={classes.reraInputElements}
 				placeholder="Certification ID"
 				label="Certification ID"
 				description="Enter your Rera Certification ID"
 				error="Required"
 				required
 			/>
-            <TextInput
-                className={classes.reraInputElements}
+			<TextInput
+				className={classes.reraInputElements}
 				placeholder="Promoter Name"
 				label="Promoter Name"
 				description="Project promoted by builder"
 				required
 			/>
-            <TextInput
-                className={classes.reraInputElements}
+			<TextInput
+				className={classes.reraInputElements}
 				placeholder="Project Name"
 				label="Project"
 				required
 			/>
+		</div>
+	);
+};
+export const PropertyForRent = () => {
+	const { classes } = useStyles();
+	const [checked, setChecked] = useState(false);
+	return (
+		<>
+			<div className={classes.checkboxClass}>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="Family"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="Single Men"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="Single Women"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="All"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+				<Select
+					size="xl"
+					className={classes.selectClass}
+					label="Agreement Type"
+					placeholder="Pick one"
+					data={[
+						{ value: "Company Lease", label: "Company Lease" },
+						{ value: "Any", label: "Any" },
+					]}
+				/>
+			</div>
+		</>
+	);
+};
+export const PropertyForSharePG = () => {
+	const { classes } = useStyles();
+	const [checked, setChecked] = useState(false);
+	return (
+		<>
+			<div className={classes.checkboxClass}>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="Girls"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="Boys"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+				<Checkbox
+					style={{ margin: "10px" }}
+					size="xl"
+					label="Both"
+					checked={checked}
+					onChange={(event) => setChecked(event.currentTarget.checked)}
+				/>
+			</div>
+		</>
+	);
+};
+export const PropertyType = () => {
+	const { classes } = useStyles();
+	const [value, setValue] = useState("react");
+	const residential = [
+		"Residential Apartment",
+		"Farm House",
+		"Serviced Apartment",
+		"Independent Villa/House",
+		"Independent Builder Floor",
+		"Studio Apartment",
+		"Residential Land",
+		"Other",
+	];
+	return (
+		<div className={classes.chipsPropertyType}>
+			<Chips multiple={false} value={value} onChange={setValue}>
+				{residential.map((propertyType) => (
+					<Chip value={propertyType}>{propertyType}</Chip>
+				))}
+			</Chips>
+		</div>
+	);
+};
+export const LocationDetail = () => {
+	const { classes } = useStyles();
+	return (
+		<div className={classes.locationDetails}>
+			<Grid>
+				<Grid.Col span={6}>
+					<Input placeholder="State" />
+				</Grid.Col>
+				<Grid.Col span={6}>
+					<Input placeholder="City" />
+				</Grid.Col>
+				<Grid.Col span={12}>
+					<Input placeholder="Project Name" />
+				</Grid.Col>
+				<Grid.Col span={12}>
+					<Input placeholder="Locality" />
+				</Grid.Col>
+				<Grid.Col span={12}>
+					<Input placeholder="Complete Address with PinCode" />
+				</Grid.Col>
+			</Grid>
+		</div>
+	);
+};
+export const PropertyDetail = () => {
+	const { classes } = useStyles();
+	return (
+		<div className={classes.propertyDetails}>
+			<Grid>
+				<Col span={4}><Input placeholder="Super-build-up area" /></Col>
+				<Col span={4}><Input placeholder="Build-up area" /></Col>
+				<Col span={4}><Input placeholder="Carpet Area" /></Col>
+				<Col span={2}><Input placeholder="Bedroom" /></Col>
+				<Col span={2}><Input placeholder="Bathroom" /></Col>
+				<Col span={2}><Input placeholder="Balcony" /></Col>
+				<Col span={2}><Input placeholder="Pooja" /></Col>
+				<Col span={2}><Input placeholder="Study" /></Col>
+				<Col span={2}><Input placeholder="Servent" /></Col>
+				<Col span={4}><Input placeholder="Property On Floor" /></Col>
+				<Col span={4}><Input placeholder="Reserved Parking" /></Col>
+				<Col span={4}><Input placeholder="Other Parking Count" /></Col>
+			</Grid>
 		</div>
 	);
 };
