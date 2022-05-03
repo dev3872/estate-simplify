@@ -8,7 +8,19 @@ import {
 } from "@mantine/core";
 import { useEffect } from "react";
 import { NavigateFunction, Route, Routes, useNavigate } from "react-router-dom";
-import { ListingFor, LocationDetail, PropertyDetail, PropertyForRent, PropertyForSharePG, PropertyType, ReraCertification, UserType } from "./NewPropertyComponents";
+import {
+	AmenitiesDetails,
+	FurnishingDetails,
+	ImagesDetail,
+	ListingFor,
+	LocationDetail,
+	PropertyDetail,
+	PropertyForRent,
+	PropertyForSharePG,
+	PropertyType,
+	ReraCertification,
+	UserType,
+} from "./NewPropertyComponents";
 
 interface FunctionalProps {
 	auth: boolean;
@@ -31,12 +43,13 @@ const ResidentialPropertySteps: residentialPropertyStepType[] = [
 		text: "Select required Categories",
 		link: "listing-for",
 		completed: true,
-	},{
-        title: "Select Options",
-        text:"Select necessory options",
-        link:"property-for",
-        completed:false,
-    },
+	},
+	{
+		title: "Select Options",
+		text: "Select necessory options",
+		link: "property-for",
+		completed: false,
+	},
 	{
 		title: "Property Type",
 		text: "Select Property Type",
@@ -57,20 +70,20 @@ const ResidentialPropertySteps: residentialPropertyStepType[] = [
 	},
 	{
 		title: "Images",
-		text: "",
-		link: "",
+		text: "Upload Property Images",
+		link: "images-detail",
 		completed: false,
 	},
 	{
 		title: "Furnishing",
-		text: "",
-		link: "",
+		text: "Select Furnishing",
+		link: "furnishing-detail",
 		completed: false,
 	},
 	{
 		title: "Amenities",
-		text: "",
-		link: "",
+		text: "Select Amenities",
+		link: "amenities-detail",
 		completed: false,
 	},
 	{
@@ -115,11 +128,14 @@ export const ResidentialProperty: React.FC<FunctionalProps> = (
 				<Routes>
 					<Route path="/user-type" element={<UserType />} />
 					<Route path="/listing-for" element={<ListingFor />} />
-                    <Route path="/rera-certification" element={<ReraCertification />} />
+					<Route path="/rera-certification" element={<ReraCertification />} />
 					<Route path="/property-for" element={<PropertyForSharePG />} />
 					<Route path="/property-type" element={<PropertyType />} />
 					<Route path="/location-detail" element={<LocationDetail />} />
 					<Route path="/property-detail" element={<PropertyDetail />} />
+					<Route path="/images-detail" element={<ImagesDetail />} />
+					<Route path="/furnishing-detail" element={<FurnishingDetails />} />
+					<Route path="/amenities-detail" element={<AmenitiesDetails />} />
 				</Routes>
 			</Col>
 		</Grid>

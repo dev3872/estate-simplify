@@ -16,8 +16,12 @@ import {
 	Text,
 	TextInput,
 	Title,
+	MantineTheme,
+	useMantineTheme,
 } from "@mantine/core";
 import { useState } from "react";
+import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { Upload, Photo, X, Icon as TablerIcon } from "tabler-icons-react";
 const owner: string = require("../images/owner.jpg");
 const builder: string = require("../images/builder.jpg");
 const dealer: string = require("../images/dealer.jpg");
@@ -96,6 +100,20 @@ const useStyles = createStyles((theme) => ({
 		width: "50%",
 	},
 	propertyDetails: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+		justifyContent: "center",
+		width: "75%",
+	},
+	imagesDetails: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+		justifyContent: "center",
+		width: "75%",
+	},
+	furnishingDetails: {
 		display: "flex",
 		flexDirection: "column",
 		height: "100%",
@@ -374,19 +392,174 @@ export const PropertyDetail = () => {
 	return (
 		<div className={classes.propertyDetails}>
 			<Grid>
-				<Col span={4}><Input placeholder="Super-build-up area" /></Col>
-				<Col span={4}><Input placeholder="Build-up area" /></Col>
-				<Col span={4}><Input placeholder="Carpet Area" /></Col>
-				<Col span={2}><Input placeholder="Bedroom" /></Col>
-				<Col span={2}><Input placeholder="Bathroom" /></Col>
-				<Col span={2}><Input placeholder="Balcony" /></Col>
-				<Col span={2}><Input placeholder="Pooja" /></Col>
-				<Col span={2}><Input placeholder="Study" /></Col>
-				<Col span={2}><Input placeholder="Servent" /></Col>
-				<Col span={4}><Input placeholder="Property On Floor" /></Col>
-				<Col span={4}><Input placeholder="Reserved Parking" /></Col>
-				<Col span={4}><Input placeholder="Other Parking Count" /></Col>
+				<Col span={4}>
+					<Input placeholder="Super-build-up area" />
+				</Col>
+				<Col span={4}>
+					<Input placeholder="Build-up area" />
+				</Col>
+				<Col span={4}>
+					<Input placeholder="Carpet Area" />
+				</Col>
+				<Col span={2}>
+					<Input placeholder="Bedroom" />
+				</Col>
+				<Col span={2}>
+					<Input placeholder="Bathroom" />
+				</Col>
+				<Col span={2}>
+					<Input placeholder="Balcony" />
+				</Col>
+				<Col span={2}>
+					<Input placeholder="Pooja" />
+				</Col>
+				<Col span={2}>
+					<Input placeholder="Study" />
+				</Col>
+				<Col span={2}>
+					<Input placeholder="Servent" />
+				</Col>
+				<Col span={4}>
+					<Input placeholder="Property On Floor" />
+				</Col>
+				<Col span={4}>
+					<Input placeholder="Reserved Parking" />
+				</Col>
+				<Col span={4}>
+					<Input placeholder="Other Parking Count" />
+				</Col>
 			</Grid>
+		</div>
+	);
+};
+export const ImagesDetail = () => {
+	const { classes } = useStyles();
+	function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
+		return status.accepted
+			? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
+			: status.rejected
+			? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+			: theme.colorScheme === "dark"
+			? theme.colors.dark[0]
+			: theme.colors.gray[7];
+	}
+
+	function ImageUploadIcon({
+		status,
+		...props
+	}: React.ComponentProps<TablerIcon> & { status: DropzoneStatus }) {
+		if (status.accepted) {
+			return <Upload {...props} />;
+		}
+
+		if (status.rejected) {
+			return <X {...props} />;
+		}
+
+		return <Photo {...props} />;
+	}
+
+	const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) => (
+		<Group
+			position="center"
+			spacing="xl"
+			style={{ minHeight: 220, pointerEvents: "none" }}
+		>
+			<ImageUploadIcon
+				status={status}
+				style={{ color: getIconColor(status, theme) }}
+				size={80}
+			/>
+
+			<div>
+				<Text size="xl" inline>
+					Drag images here or click to select files
+				</Text>
+				<Text size="sm" color="dimmed" inline mt={7}>
+					Attach as many files as you like, each file should not exceed 5mb
+				</Text>
+			</div>
+		</Group>
+	);
+
+	const theme = useMantineTheme();
+	return (
+		<div className={classes.imagesDetails}>
+			<Dropzone
+				onDrop={(files) => console.log("accepted files", files)}
+				onReject={(files) => console.log("rejected files", files)}
+				maxSize={3 * 1024 ** 2}
+				accept={IMAGE_MIME_TYPE}
+			>
+				{(status) => dropzoneChildren(status, theme)}
+			</Dropzone>
+		</div>
+	);
+};
+export const FurnishingDetails = () => {
+	const { classes } = useStyles();
+	const furnishingItems = [
+		"WARDROBE",
+		"Bed",
+		"Fans",
+		"Light",
+		"GEYSER",
+		"TV",
+		"AC",
+		"Modular Kitchen",
+		"Fridge",
+		"STOVE",
+		"WASHING MACHINE",
+		"WATER PURIFIER",
+		"MICROWAVE",
+		"CURTAINS",
+		"CHIMNEY",
+		"EXHAUST FAN",
+		"SOFA",
+		"DINING TABLE",
+	];
+	return (
+		<div className={classes.furnishingDetails}>
+			<Chips multiple>
+				{furnishingItems.map((item) => (
+					<Chip value={item}>{item}</Chip>
+				))}
+			</Chips>
+		</div>
+	);
+};
+export const AmenitiesDetails = () => {
+	const { classes } = useStyles();
+	const amenitiesItemsResidential = [
+		"LIFTS",
+		"PARK",
+		"MAINTENANCE STAFF",
+		"VISITOR PARKING",
+		"WATER STORAGE",
+		"FENG SHUI / VAASTU COMPLIANT",
+		"INTERCOM FACILITY",
+		"FIRE ALARM/SECURITY",
+		"CENTRALLY AIR CONDITIONED",
+		"PRIVATE GARDEN TERRACE",
+		"PIPED GAS",
+		"INTERNET / WI-FI CONNECTIVITY",
+		"WATER PURIFIER",
+		"FITNESS CENTRE / GYM",
+		"CLUB HOUSE/COMMUNITY CENTER",
+		"SECURITY PERSONNEL",
+		"WATER SOFTENING PLANT",
+		"SHOPPING CENTRE",
+		"WASTE DISPOSAL",
+		"RAIN WATER HARVESTING",
+		"BANK ATTACHED PROPERTY",
+	];
+	return (
+		<div className={classes.furnishingDetails}>
+			<Chips multiple>
+				{amenitiesItemsResidential.map((item) => (
+					<Chip value={item}>{item}</Chip>
+				))}
+			</Chips>
 		</div>
 	);
 };
